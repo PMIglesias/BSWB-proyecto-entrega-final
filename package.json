@@ -11,10 +11,9 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "prestart": "npm test",
+    "test": "cross-env NODE_ENV=test node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "predev": "npm test"
-  },  
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/PMIglesias/BSWB-proyecto-backend-final.git"
@@ -38,6 +37,7 @@
     "pug": "^3.0.3"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "jest": "^30.2.0",
     "mongodb-memory-server": "^10.3.0",
     "nodemon": "^3.1.10",
