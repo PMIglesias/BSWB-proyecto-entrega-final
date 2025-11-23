@@ -4,8 +4,15 @@ block content
   .login-container
     h1 Iniciar Sesión
 
-    if mensaje
-      .alert= mensaje
+    //- Mensajes de error flash
+    if error_msg && error_msg.length
+      each msg in error_msg
+        .alert.alert-danger= msg
+
+    //- Mensajes de éxito flash
+    if success_msg && success_msg.length
+      each msg in success_msg
+        .alert.alert-success= msg
 
     form(action="/auth/login" method="POST")
       .form-group

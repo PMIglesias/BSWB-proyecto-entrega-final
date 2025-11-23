@@ -14,7 +14,7 @@ html(lang="es")
         a.nav-logo(href="/") Clínica coso
         button#themeBtn.nav-link(type="button", title="Alternar tema") 🌙
         if usuario
-           //- mandamos un post al back p´rara rompres la session
+          //- mandamos un post al back para romper la session
           form(action="/auth/logout", method="POST", style="display:inline")
             button.nav-link(type="submit") Cerrar sesión
 
