@@ -8,13 +8,15 @@ html(lang="es")
     link(rel="icon", href="/favicon.ico", type="image/x-icon")
 
   body
-    //- Header / Navbar
+    //- header / navbar
     header
       nav.navbar
         a.nav-logo(href="/") Clínica coso
         button#themeBtn.nav-link(type="button", title="Alternar tema") 🌙
         if usuario
-          a.nav-link(href="/auth/logout") Cerrar sesión
+           //- mandamos un post al back p´rara rompres la session
+          form(action="/auth/logout", method="POST", style="display:inline")
+            button.nav-link(type="submit") Cerrar sesión
 
     //- Contenedor de mensajes Flash
     .flash-messages
@@ -23,11 +25,11 @@ html(lang="es")
       if error_msg && error_msg.length > 0
         .alert.alert-danger= error_msg
 
-    //- Contenido principal
+    //- container principal
     main.container
       block content
 
-    //- Footer minimalista
+    //- footer 
     footer.footer
       p &copy; #{new Date().getFullYear()} coso
     script(src="/js/theme.js")

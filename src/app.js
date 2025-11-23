@@ -2,17 +2,12 @@ import express from "express";
 import path from "path";
 import dotenv from "dotenv";
 import session from "express-session";
-import flash from "connect-flash"; // Importar connect-flash
-import { conectarDB } from "./config/db.js";
+import flash from "connect-flash";
 import indexRoutes from "./routes/index.js";
 
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
-// DB
-await conectarDB();
 
 // configs
 app.set("view engine", "pug");
@@ -34,7 +29,7 @@ app.use(
 // Middleware de connect-flash
 app.use(flash());
 
-// Middleware para pasar mensajes flash y usuario a las vistas
+// Middleware para mensajes y usuario
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
@@ -50,27 +45,36 @@ app.use((req, res, next) => {
   next();
 });
 
-// rutas desde index.js
+// rutas
 app.use("/", indexRoutes);
 
-// handle 404
+// 404
 app.use((req, res) => {
   res.status(404);
-  if (req.accepts("html")) return res.render("error", { message: "Página no encontrada" });
+  if (req.accepts("html"))
+    return res.render("error", { message: "Página no encontrada" });
+
   return res.json({ error: "Not found" });
 });
 
-// Middleware de manejo de errores global
+// error handler
 app.use((err, req, res, next) => {
   console.error("ERROR:", err.stack);
+
   const statusCode = err.statusCode || 500;
   const message = err.message || "Ha ocurrido un error interno en el servidor.";
+
+  // durante tests devolver JSON
+  if (process.env.NODE_ENV === "test") {
+    return res.status(statusCode).json({ error: message });
+  }
+
+  // En modo normal devolver vista caniche
   res.status(statusCode).render("error", {
-    title: `Error ${statusCode}`,
-    message: message,
+    titulo: "Error",
+    mensaje: message
   });
 });
 
 
-// iniciar servidor
-app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+export default app;
