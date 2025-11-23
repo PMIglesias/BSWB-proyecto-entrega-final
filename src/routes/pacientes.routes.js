@@ -13,7 +13,7 @@ import { authMiddleware, rolMiddleware } from "../middlewares/auth.js";
 const router = Router();
 
 
-router.get("/", authMiddleware(), rolMiddleware(["admin", "recepcionista"]), obtenerPacientes);
+router.get("/", authMiddleware({ redirect: true }), rolMiddleware(["admin", "recepcionista"]), obtenerPacientes);
 
 router.get("/:id", authMiddleware(), rolMiddleware(["admin", "recepcionista"]), obtenerPaciente);
 router.post("/", authMiddleware(), rolMiddleware(["admin", "recepcionista"]), crearPaciente);
