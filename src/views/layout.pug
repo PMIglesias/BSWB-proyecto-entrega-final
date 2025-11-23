@@ -1,0 +1,33 @@
+doctype html
+html(lang="es")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title #{titulo || "Clínica"}
+    link(rel="stylesheet", href="/css/styles.css")
+    link(rel="icon", href="/favicon.ico", type="image/x-icon")
+
+  body
+    //- Header / Navbar
+    header
+      nav.navbar
+        a.nav-logo(href="/") Clínica coso
+        button#themeBtn.nav-link(type="button", title="Alternar tema") 🌙
+        if usuario
+          a.nav-link(href="/auth/logout") Cerrar sesión
+
+    //- Contenedor de mensajes Flash
+    .flash-messages
+      if success_msg && success_msg.length > 0
+        .alert.alert-success= success_msg
+      if error_msg && error_msg.length > 0
+        .alert.alert-danger= error_msg
+
+    //- Contenido principal
+    main.container
+      block content
+
+    //- Footer minimalista
+    footer.footer
+      p &copy; #{new Date().getFullYear()} coso
+    script(src="/js/theme.js")

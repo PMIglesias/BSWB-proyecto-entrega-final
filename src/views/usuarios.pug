@@ -1,0 +1,74 @@
+extends layout
+
+block content
+  .usuarios-content
+    h1 Usuarios
+
+    nav
+      a.btn(href="/") Volver al Inicio
+
+    // FORMULARIO NUEVO / EDITAR USUARIO
+    form#formUsuario(method="POST", action="/usuarios")
+      input(type="hidden" name="id" id="usuarioId")
+      
+      .form-group
+        label(for="nombre") Nombre
+        input#nombre(type="text" name="nombre" required)
+
+      .form-group
+        label(for="email") Email
+        input#email(type="email" name="email" required)
+
+      .form-group
+        label(for="password") Contraseña
+        input#password(type="password" name="password")
+
+      .form-group
+        label(for="rol") Rol
+        select#rol(name="rol" required)
+          option(value="" disabled selected) Seleccione un rol
+          option(value="admin") Admin
+          option(value="recepcionista") Recepcionista
+          option(value="medico") Médico
+
+      button.btn.btn-primary(type="submit") Guardar Usuario
+
+    // LISTADO DE USUARIOS
+    if usuarios.length
+      table
+        thead
+          tr
+            th Nombre
+            th Email
+            th Rol
+            th Acciones
+        tbody
+          each usuario in usuarios
+            tr
+              td= usuario.nombre
+              td= usuario.email
+              td= usuario.rol
+              td
+                button.btn.btn-secondary.btn-editar-usuario(
+                  type="button"
+                  data-usuario-id=usuario._id
+                  data-nombre=usuario.nombre
+                  data-email=usuario.email
+                  data-rol=usuario.rol
+                ) Editar
+                button.btn.btn-danger.btn-eliminar-usuario(
+                  type="button"
+                  data-usuario-id=usuario._id
+                ) Eliminar
+
+  // MODAL CONFIRMAR ELIMINACIÓN
+  .modal#modalEliminarUsuario
+    .modal-content
+      h3 Confirmar eliminación
+      p ¿Estás seguro de que deseas eliminar este usuario?
+      .modal-buttons
+        button.btn.btn-secondary#btnCancelarUsuario Cancelar
+        button.btn.btn-danger#btnConfirmarEliminarUsuario Eliminar
+
+  script(src="/js/theme.js")
+  script(src="/js/usuarios.js")

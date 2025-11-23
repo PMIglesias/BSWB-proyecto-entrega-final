@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .index-content
+    h1 Bienvenido, #{usuario.rol} - #{usuario.nombre}
+
+    .index-buttons
+      a.btn(href="/pacientes") Ver Pacientes
+      a.btn(href="/turnos") Ver Turnos
+
+      if usuario.rol === "admin"
+        a.btn(href="/medicos") Ver Médicos
+        a.btn(href="/usuarios") Administrar Usuarios

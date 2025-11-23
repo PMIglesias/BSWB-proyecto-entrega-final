@@ -1,0 +1,98 @@
+extends layout
+
+block content
+  .pacientes-content
+    h1= titulo
+
+    nav
+      a.btn(href="/") Volver al Inicio
+
+    form#formPaciente(method="POST")
+      input(type="hidden" name="_id" id="pacienteId")
+      .form-group
+        label(for="nombre") Nombre
+        input#nombre(type="text" name="nombre" required)
+      .form-group
+        label(for="edad") Edad
+        input#edad(type="number" name="edad" required)
+      .form-group
+        label(for="diagnostico") Diagnóstico
+        input#diagnostico(type="text" name="diagnostico" required)
+      button.btn.btn-primary(type="submit") Crear Paciente
+
+    hr
+
+    // --- TABLA DE PACIENTES ---
+    if pacientes.length
+      table
+        thead
+          tr
+            th ID
+            th Nombre
+            th Edad
+            th Diagnóstico
+            th Turnos
+            th Acciones
+        tbody
+          each paciente in pacientes
+            tr(data-id=paciente.id)
+              td= paciente.id
+              td= paciente.nombre
+              td= paciente.edad
+              td= paciente.diagnostico
+              td
+                if paciente.turnos.length
+                  ul.turnos-list
+                    each turno, index in paciente.turnos
+                      li.turno-item
+                        span.turno-text= turno
+                        button.btn.btn-sm.btn-danger.btn-eliminar(
+                          type="button"
+                          data-paciente-id=paciente.id
+                          data-turno-index=index
+                          data-turno-fecha=turno
+                          title="Eliminar turno"
+                        ) Eliminar
+                else
+                  | Sin turnos
+              td
+                button.btn.btn-sm.btn-warning.btn-editar-paciente(
+                  type="button"
+                  data-paciente-id=paciente.id
+                  data-nombre=paciente.nombre
+                  data-edad=paciente.edad
+                  data-diagnostico=paciente.diagnostico
+                  title="Editar paciente"
+                ) Editar
+                button.btn.btn-sm.btn-danger.btn-eliminar-paciente(
+                  type="button"
+                  data-paciente-id=paciente.id
+                  title="Eliminar paciente"
+                ) Eliminar
+    else
+      p No hay pacientes registrados.
+
+  // modal del turnio
+  .modal#modalEliminarTurno
+    .modal-content
+      h3 Confirmar eliminación de turno
+      .turno-info
+        .turno-fecha#fechaTurno
+        .turno-hora#horaTurno
+      p ¿Estás seguro de que deseas eliminar este turno?
+      .modal-buttons
+        button.btn.btn-secondary#btnCancelar Cancelar
+        button.btn.btn-danger#btnConfirmarEliminar Eliminar
+
+  // modal del pac
+  .modal#modalEliminarPaciente
+    .modal-content
+      h3 Confirmar eliminación de paciente
+      p ¿Estás seguro de que deseas eliminar este paciente?
+      .modal-buttons
+        button.btn.btn-secondary#btnCancelarPaciente Cancelar
+        button.btn.btn-danger#btnConfirmarEliminarPaciente Eliminar
+
+  // 
+  script(src="/js/theme.js")
+  script(src="/js/pacientes.js")

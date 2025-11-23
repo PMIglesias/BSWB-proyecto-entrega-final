@@ -1,0 +1,68 @@
+extends layout
+
+block content
+  .turnos-content
+    h1 Turnos
+
+    nav
+      a.btn(href="/") Volver al Inicio
+
+
+    form#formNuevoTurno(method="POST", action="/turnos")
+      .form-group
+        label(for="paciente") Paciente
+        select#paciente(name="pacienteId" required)
+          option(value="" disabled selected) Seleccione un paciente
+          each paciente in pacientes
+            option(value=paciente._id.toString())= paciente.nombre
+
+      .form-group
+        label(for="medico") Médico
+        select#medico(name="medicoId" required)
+          option(value="" disabled selected) Seleccione un médico
+          each medico in medicos
+            option(value=medico._id.toString())= medico.nombre + " - " + medico.especialidad
+
+      .form-group
+        label(for="fechaHora") Fecha y Hora
+        input#fechaHora(type="datetime-local" name="fechaHora" required)
+
+      button.btn.btn-primary(type="submit") Crear Turno
+
+
+    if turnos.length
+      table
+        thead
+          tr
+            th ID
+            th Paciente
+            th Médico
+            th Fecha y Hora
+            th Acciones
+        tbody
+          each turno in turnos
+            tr
+              td= turno._id.toString()
+              td= turno.paciente.nombre
+              td= turno.medico.nombre + " - " + turno.medico.especialidad
+              td= turno.fechaHora
+              td
+                button.btn.btn-danger.btn-eliminar-turno(
+                  type="button"
+                  data-turno-id=turno._id.toString()
+                  title="Eliminar turno"
+                ) Eliminar
+    else
+      p No hay turnos registrados.
+
+
+  .modal#modalEliminarTurno
+    .modal-content
+      h3 Confirmar eliminación
+      p ¿Estás seguro de que deseas eliminar este turno?
+      .modal-buttons
+        button.btn.btn-secondary#btnCancelar Cancelar
+        button.btn.btn-danger#btnConfirmarEliminar Turno
+
+  script(src="/js/theme.js")
+  script(src="/js/turnos.js")

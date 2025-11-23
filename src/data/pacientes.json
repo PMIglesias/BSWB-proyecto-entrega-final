@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "nombre": "Juan Pérez",
+    "edad": 45,
+    "diagnostico": "Hipertensión",
+    "turnos": [
+      "2025-09-21 10:00",
+      "2025-09-23 15:00",
+      "2025-09-19 10:00",
+      "2025-09-19 11:00",
+      "2025-09-19 10:00",
+      "2025-09-20 10:00",
+      "2025-09-01 10:00"
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "Ana López",
+    "edad": 32,
+    "diagnostico": "Chequeo general",
+    "turnos": [
+      "2025-09-20 09:30"
+    ]
+  },
+  {
+    "id": 3,
+    "nombre": "Carlos Díaz",
+    "edad": 51,
+    "diagnostico": "Dolor de espalda",
+    "turnos": []
+  },
+  {
+    "id": 4,
+    "nombre": "María González",
+    "edad": 27,
+    "diagnostico": "Controles de embarazo",
+    "turnos": [
+      "2025-09-22 11:00"
+    ]
+  },
+  {
+    "id": 5,
+    "nombre": "Pedro Ramírez",
+    "edad": 38,
+    "diagnostico": "Chequeo cardíaco",
+    "turnos": []
+  },
+  {
+    "id": 6,
+    "nombre": "Laura Fernández",
+    "edad": 41,
+    "diagnostico": "Chequeo general",
+    "turnos": []
+  },
+  {
+    "id": 7,
+    "nombre": "Sofía Martínez",
+    "edad": 29,
+    "diagnostico": "Alergias",
+    "turnos": [
+      "2025-09-25 14:30"
+    ]
+  },
+  {
+    "id": 8,
+    "nombre": "Diego Torres",
+    "edad": 34,
+    "diagnostico": "Dolor abdominal",
+    "turnos": []
+  },
+  {
+    "id": 9,
+    "nombre": "Valentina Suárez",
+    "edad": 22,
+    "diagnostico": "Chequeo ginecológico",
+    "turnos": []
+  },
+  {
+    "id": 10,
+    "nombre": "Fernando Castro",
+    "edad": 60,
+    "diagnostico": "Diabetes tipo 2",
+    "turnos": []
+  }
+]

@@ -1,0 +1,83 @@
+extends layout
+
+block content
+  .medicos-content
+    h1= titulo
+
+    // nav
+    nav
+      a.btn(href="/") Volver al Inicio
+      button.btn.btn-primary#btnNuevoMedico(type="button") Nuevo Médico
+
+    // form
+    .form-medico#formMedico(style="display: none; margin-top: 20px;")
+      h2#formTitulo Nuevo Médico
+      form(method="POST" id="formularioMedico")
+        input(type="hidden" name="_id" id="medicoId")
+        .form-group
+          label(for="nombre") Nombre
+          input#nombre(type="text" name="nombre" required)
+        .form-group
+          label(for="especialidad") Especialidad
+          input#especialidad(type="text" name="especialidad" required)
+        .form-group
+          label(for="matricula") Matrícula
+          input#matricula(type="text" name="matricula" required)
+        .form-group
+          label(for="telefono") Teléfono
+          input#telefono(type="text" name="telefono")
+        .form-group
+          label(for="email") Email
+          input#email(type="email" name="email")
+        button.btn.btn-success(type="submit") Guardar
+
+    // table
+    if medicos.length
+      table
+        thead
+          tr
+            th ID
+            th Nombre
+            th Especialidad
+            th Matrícula
+            th Teléfono
+            th Email
+            th Acciones
+        tbody
+          each medico in medicos
+            tr
+              td= medico._id
+              td= medico.nombre
+              td= medico.especialidad
+              td= medico.matricula
+              td= medico.telefono || "-"
+              td= medico.email || "-"
+              td
+                button.btn.btn-secondary.btn-editar(
+                  type="button",
+                  data-id=medico._id,
+                  data-nombre=medico.nombre,
+                  data-especialidad=medico.especialidad,
+                  data-matricula=medico.matricula,
+                  data-telefono=medico.telefono,
+                  data-email=medico.email
+                ) Editar
+                button.btn.btn-danger.btn-eliminar(
+                  type="button",
+                  data-id=medico._id
+                ) Eliminar
+    else
+      p No hay médicos registrados.
+
+  // modal del
+  .modal#modalEliminar
+    .modal-content
+      h3 Confirmar eliminación
+      p ¿Estás seguro que deseas eliminar este médico?
+      .modal-buttons
+        button.btn.btn-secondary#btnCancelar Cancelar
+        button.btn.btn-danger#btnConfirmarEliminar Eliminar
+
+  
+  script(src="/js/theme.js")
+  script(src="/js/medicos.js")
