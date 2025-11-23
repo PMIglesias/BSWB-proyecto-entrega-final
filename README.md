@@ -2,7 +2,7 @@
 
 ## Introducción
 
-Este proyecto representa la versión final y mejorada del sistema de gestión para una clínica, desarrollado para la materia **Desarrollo Web Backend**. Partiendo de una base funcional con Node.js, Express y MongoDB, esta versión final introduce mejoras significativas en robustez, seguridad y experiencia de usuario, aplicando conceptos avanzados de desarrollo backend.
+Este proyecto representa la versión final y mejorada del sistema de gestión para una clínica, desarrollado para la materia **Desarrollo de Sistemas Web (Back End)**. Partiendo de una base funcional con Node.js, Express y MongoDB, esta versión final introduce mejoras significativas en robustez, seguridad y experiencia de usuario, aplicando conceptos avanzados de desarrollo backend.
 
 La aplicación sigue un patrón de diseño **Modelo-Vista-Controlador (MVC)** y permite la gestión integral de pacientes, médicos, usuarios y turnos, con un sistema de autenticación basado en roles y una interfaz renderizada en el servidor con Pug.
 
@@ -17,18 +17,18 @@ La aplicación sigue un patrón de diseño **Modelo-Vista-Controlador (MVC)** y 
   - 👤 Usuarios
 - **Autenticación y Autorización:**
   - Sistema de login basado en **sesiones** (`express-session`).
-  - **Protección de rutas** mediante middlewares que verifican la autenticación y el rol del usuario (administrador/usuario).
+  - **Protección de rutas** mediante middlewares que verifican la autenticación y el rol del usuario (administrador/recepcionista).
 - **Manejo de Errores Centralizado:**
-  - Un **middleware de errores global** captura todas las excepciones de la aplicación, previniendo caídas del servidor y presentando una página de error unificada y amigable.
+  - Un **middleware de errores global** captura todas las excepciones de la aplicación, previniendo caídas del servidor y presentando una página de error unificada.
 - **Notificaciones con Mensajes Flash:**
-  - Implementación de `connect-flash` para enviar mensajes de **éxito** y **error** a los usuarios tras realizar una acción (ej. "Usuario creado correctamente"), mejorando la retroalimentación sin ensuciar las URLs.
+  - Implementación de `connect-flash` para enviar mensajes de **éxito** y **error** a los usuarios tras realizar una acción.
 - **Vistas Dinámicas Renderizadas en Servidor:**
   - Interfaz de usuario construida con el motor de plantillas **Pug**.
   - Diseño adaptable con modo **claro/oscuro**.
 - **Base de Datos NoSQL:**
-  - Persistencia de datos gestionada con **MongoDB** a través del ODM **Mongoose**, con modelos de datos bien definidos y validados.
+  - Persistencia de datos gestionada con **MongoDB** a través del ODM **Mongoose**, con modelos de datos bien definidos.
 - **Configuración Segura:**
-  - Uso de **variables de entorno** (`.env`) para gestionar información sensible como credenciales de la base de datos y secretos de sesión.
+  - Uso de **variables de entorno** (`.env`) para gestionar información sensible.
 
 ---
 
@@ -36,15 +36,16 @@ La aplicación sigue un patrón de diseño **Modelo-Vista-Controlador (MVC)** y 
 
 | Tecnología | Propósito |
 |--------------------|----------------------------------------------|
-| **Node.js**        | Entorno de ejecución del servidor (backend). |
-| **Express.js**     | Framework para la creación del servidor y la gestión de rutas. |
-| **MongoDB**        | Base de datos NoSQL para la persistencia de datos. |
-| **Mongoose**       | ODM para modelar y conectar con la base de datos MongoDB. |
-| **Pug**            | Motor de plantillas para generar las vistas HTML dinámicas. |
+| **Node.js** | Entorno de ejecución del servidor (backend). |
+| **Express.js** | Framework para la creación del servidor y la gestión de rutas. |
+| **MongoDB** | Base de datos NoSQL para la persistencia de datos. |
+| **Mongoose** | ODM para modelar y conectar con la base de datos MongoDB. |
+| **Pug** | Motor de plantillas para generar las vistas HTML dinámicas. |
 | **express-session**| Middleware para la gestión de sesiones de usuario. |
-| **connect-flash**  | Middleware para mostrar mensajes de notificación tras redirecciones. |
-| **dotenv**         | Para cargar y gestionar variables de entorno desde un archivo `.env`. |
-| **Nodemon**        | Herramienta de desarrollo para reiniciar el servidor automáticamente. |
+| **connect-flash** | Middleware para mostrar mensajes de notificación tras redirecciones. |
+| **dotenv** | Para cargar y gestionar variables de entorno desde un archivo `.env`. |
+| **Nodemon** | Herramienta de desarrollo para reiniciar el servidor automáticamente. |
+| **Jest & Supertest** | Para la ejecución de pruebas automatizadas. |
 
 ---
 
@@ -60,13 +61,11 @@ Sigue estos pasos para ejecutar el proyecto en tu entorno local.
 ### 2. Clonar el Repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/tu-repositorio.git
-cd tu-repositorio
+git clone https://github.com/PMIglesias/BSWB-proyecto-entrega-final.git
+cd BSWB-proyecto-entrega-final
 ```
 
 ### 3. Instalar Dependencias
-
-Ejecuta el siguiente comando en la raíz del proyecto para instalar todos los paquetes necesarios.
 
 ```bash
 npm install
@@ -78,20 +77,20 @@ Crea un archivo llamado `.env` en la raíz del proyecto. Puedes duplicar el arch
 
 ```env
 # URL de conexión a tu base de datos MongoDB
-MONGO_URI="mongodb+srv://<user>:<password>@cluster..."
+MONGO_URI="mongodb+srv://<user>:<password>@cluster.../?retryWrites=true&w=majority"
 
 # Puerto en el que correrá el servidor
 PORT=3000
 
 # Clave secreta para firmar las cookies de sesión
-SESSION_SECRET="un_secreto_muy_fuerte_y_largo"
+SESSION_SECRET="un_secreto_muy_fuerte_y_largo_para_las_sesiones"
 ```
 
 ### 5. Ejecutar la Aplicación
 
 El proyecto incluye scripts para iniciar el servidor en diferentes modos:
 
-- **Modo Desarrollo:** (recomendado) Inicia el servidor con `nodemon`, que se reiniciará automáticamente con cada cambio en el código.
+- **Modo Desarrollo (recomendado):** Inicia el servidor con `nodemon`, que se reiniciará automáticamente con cada cambio en el código.
   ```bash
   npm run dev
   ```
@@ -101,13 +100,56 @@ El proyecto incluye scripts para iniciar el servidor en diferentes modos:
   npm start
   ```
 
-Una vez ejecutado, podrás acceder a la aplicación en `http://localhost:3000` (o el puerto que hayas configurado).
+Una vez ejecutado, podrás acceder a la aplicación en `http://localhost:3000`.
+
+---
+
+## Pruebas
+
+#### Pruebas Automatizadas
+
+El proyecto utiliza `jest` y `supertest` para pruebas de integración, con `mongodb-memory-server` para evitar depender de una base de datos externa durante las pruebas.
+
+```bash
+npm test
+```
+
+#### Pruebas Manuales y Credenciales de Demostración
+
+Para facilitar las pruebas manuales del flujo de la aplicación, puedes usar las siguientes credenciales:
+
+-   **Administrador:**
+    -   **Email:** `admin@test.com`
+    -   **Password:** `123456`
+-   **Recepcionista:**
+    -   **Email:** `recepcion@test.com`
+    -   **Password:** `123456`
+
+**Flujo de Prueba Recomendado:**
+1.  Intentar acceder a `/pacientes` sin haber iniciado sesión. El sistema **debe redirigir** a `/auth/login`.
+2.  Iniciar sesión con las credenciales de `recepcionista`.
+3.  Acceder a `/pacientes` nuevamente. El acceso **debe ser exitoso**.
+4.  Cerrar sesión y repetir el proceso con las credenciales de `admin`.
+
+---
+
+## Solución de Problemas Comunes
+
+-   **Error: `MONGO_URI no definido`**
+    -   **Causa:** El archivo `.env` no existe o la variable `MONGO_URI` no está definida.
+    -   **Solución:** Asegúrate de que el archivo `.env` esté en la raíz del proyecto y contenga la línea `MONGO_URI="..."`.
+
+-   **Al acceder a una ruta protegida sin sesión, se muestra un JSON (`{"mensaje":"No autorizado"}`) en lugar de redirigir al login.**
+    -   **Causa:** El servidor de Node.js no ha recargado los cambios del código.
+    -   **Solución:** Detén el servidor (`Ctrl + C`) y reinícialo (`npm run dev`). Si el problema persiste, verifica que el middleware en la ruta afectada esté llamado con la opción de redirección: `authMiddleware({ redirect: true })`.
+
+-   **El botón "Cerrar Sesión" no funciona o muestra un error `Cannot GET /auth/logout`.**
+    -   **Causa:** La ruta de logout espera un método `POST`, pero se está enviando un `GET` desde un enlace.
+    -   **Solución:** Asegúrate de que en la vista (`layout.pug`) el logout se gestione a través de un `<form>` con `method="POST"`.
 
 ---
 
 ## Estructura del Proyecto
-
-El proyecto sigue una estructura basada en el patrón MVC para mantener el código organizado y escalable.
 
 ```
 /
