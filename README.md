@@ -11,13 +11,14 @@ La aplicación sigue un patrón de diseño **Modelo-Vista-Controlador (MVC)** y 
 ## Características Principales
 
 - **Gestión CRUD Completa:** Operaciones de Crear, Leer, Actualizar y Eliminar para las entidades principales:
-  - 🚶‍♂️ Pacientes
-  - 👨‍⚕️ Médicos
-  - 📅 Turnos
-  - 👤 Usuarios
+  -  Pacientes
+  -  Médicos
+  -  Turnos
+  -  Usuarios
 - **Autenticación y Autorización:**
   - Sistema de login basado en **sesiones** (`express-session`).
   - **Protección de rutas** mediante middlewares que verifican la autenticación y el rol del usuario (administrador/recepcionista).
+  - Logout que destruye la sesión del usuario.
 - **Manejo de Errores Centralizado:**
   - Un **middleware de errores global** captura todas las excepciones de la aplicación, previniendo caídas del servidor y presentando una página de error unificada.
 - **Notificaciones con Mensajes Flash:**
@@ -26,9 +27,10 @@ La aplicación sigue un patrón de diseño **Modelo-Vista-Controlador (MVC)** y 
   - Interfaz de usuario construida con el motor de plantillas **Pug**.
   - Diseño adaptable con modo **claro/oscuro**.
 - **Base de Datos NoSQL:**
-  - Persistencia de datos gestionada con **MongoDB** a través del ODM **Mongoose**, con modelos de datos bien definidos.
+  - Persistencia de datos gestionada con MongoDB mediante Mongoose, con modelos bien definidos y relaciones básicas entre entidades.
 - **Configuración Segura:**
   - Uso de **variables de entorno** (`.env`) para gestionar información sensible.
+  - Separación de app y server para facilitar testing y despliegue.
 
 ---
 
@@ -45,7 +47,9 @@ La aplicación sigue un patrón de diseño **Modelo-Vista-Controlador (MVC)** y 
 | **connect-flash** | Middleware para mostrar mensajes de notificación tras redirecciones. |
 | **dotenv** | Para cargar y gestionar variables de entorno desde un archivo `.env`. |
 | **Nodemon** | Herramienta de desarrollo para reiniciar el servidor automáticamente. |
-| **Jest & Supertest** | Para la ejecución de pruebas automatizadas. |
+| **Jest & Supertest** | Para la ejecución de pruebas automatizadas de rutas y funcionalidades del backend. |
+| **bcrypt / bcryptjs** | Para el hash y verificación segura de contraseñas de usuarios.|
+| **mongodb-memory-server** | Base de datos en memoria usada para pruebas automatizadas sin afectar la base de datos real.|
 
 ---
 
@@ -73,7 +77,7 @@ npm install
 
 ### 4. Configurar Variables de Entorno
 
-Crea un archivo llamado `.env` en la raíz del proyecto. Puedes duplicar el archivo `.env.example` si existe, o crearlo desde cero con las siguientes variables:
+Crea un archivo llamado `.env` en la raíz del proyecto. Puedes duplicar el archivo `.env.example`, o crearlo desde cero con las siguientes variables:
 
 ```env
 # URL de conexión a tu base de datos MongoDB
@@ -84,6 +88,7 @@ PORT=3000
 
 # Clave secreta para firmar las cookies de sesión
 SESSION_SECRET="un_secreto_muy_fuerte_y_largo_para_las_sesiones"
+
 ```
 
 ### 5. Ejecutar la Aplicación
@@ -119,13 +124,13 @@ npm test
 Para facilitar las pruebas manuales del flujo de la aplicación, puedes usar las siguientes credenciales:
 
 -   **Administrador:**
-    -   **Email:** `admin@test.com`
+    -   **Email:** `admin@hospital.com`
     -   **Password:** `123456`
 -   **Recepcionista:**
-    -   **Email:** `recepcion@test.com`
+    -   **Email:** `recepcion@hospital.com`
     -   **Password:** `123456`
 
-**Flujo de Prueba Recomendado:**
+**Flujo de Prueba Manual Recomendada:**
 1.  Intentar acceder a `/pacientes` sin haber iniciado sesión. El sistema **debe redirigir** a `/auth/login`.
 2.  Iniciar sesión con las credenciales de `recepcionista`.
 3.  Acceder a `/pacientes` nuevamente. El acceso **debe ser exitoso**.
@@ -156,13 +161,17 @@ Para facilitar las pruebas manuales del flujo de la aplicación, puedes usar las
 ├── public/             # Archivos estáticos (CSS, JS del cliente, imágenes)
 ├── src/
 │   ├── app.js          # Archivo principal de configuración de Express
+│   ├── server.js       # Archivo para iniciar el servidor
 │   ├── config/         # Configuración de la base de datos (db.js)
 │   ├── controllers/    # Lógica de negocio y manejo de peticiones
 │   ├── middlewares/    # Middlewares personalizados (autenticación, roles, etc.)
 │   ├── models/         # Modelos de datos de Mongoose (esquemas)
 │   ├── routes/         # Definición de las rutas de la API y vistas
+│   ├── scripts/        # Actualmente solo contiene "seed.js" que usamos para poblar la DB
 │   └── views/          # Plantillas Pug para la interfaz de usuario
+├── tests/              # Pruebas unitarias y de integración
 ├── .env                # (No versionado) Variables de entorno
+├── .env.example        # Variables de entorno para correr la demo
 ├── .gitignore          # Archivos y carpetas a ignorar por Git
 ├── package.json        # Dependencias y scripts del proyecto
 └── README.md           # Este archivo
