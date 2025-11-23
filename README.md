@@ -55,7 +55,7 @@ La aplicación sigue un patrón de diseño **Modelo-Vista-Controlador (MVC)** y 
 
 ## Instalación y Puesta en Marcha
 
-Sigue estos pasos para ejecutar el proyecto en tu entorno local.
+Seguí estos pasos para ejecutar el proyecto en tu entorno local.
 
 ### 1. Prerrequisitos
 
@@ -77,7 +77,7 @@ npm install
 
 ### 4. Configurar Variables de Entorno
 
-Crea un archivo llamado `.env` en la raíz del proyecto. Puedes duplicar el archivo `.env.example`, o crearlo desde cero con las siguientes variables:
+Creá un archivo llamado `.env` en la raíz del proyecto. Puedes duplicar el archivo `.env.example`(duplicarlo y renombrar como ".env"), o crearlo desde cero con las siguientes variables:
 
 ```env
 # URL de conexión a tu base de datos MongoDB
@@ -121,7 +121,7 @@ npm test
 
 #### Pruebas Manuales y Credenciales de Demostración
 
-Para facilitar las pruebas manuales del flujo de la aplicación, puedes usar las siguientes credenciales:
+Para facilitar las pruebas manuales del flujo de la aplicación, puedes usar las siguientes credenciales (si estás usando la db dentro de .env.examples ):
 
 -   **Administrador:**
     -   **Email:** `admin@hospital.com`
