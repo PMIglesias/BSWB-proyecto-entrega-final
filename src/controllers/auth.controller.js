@@ -11,20 +11,35 @@ export const loginUsuario = async (req, res, next) => {
     const { email, password } = req.body;
 
     const usuario = await Usuario.findOne({ email });
-    if (!usuario) return res.status(400).json({ mensaje: "Email o contraseña incorrectos" });
+
+    // Si no existe el usuario
+    if (!usuario) {
+      if (req.headers.accept && req.headers.accept.includes("text/html")) {
+        req.flash("error_msg", "Email o contraseña incorrectos");
+        req.flash("old_email", email || "");
+        return res.redirect("/auth/login");
+      }
+      return res.status(400).json({ mensaje: "Email o contraseña incorrectos" });
+    }
 
     const passwordValido = await usuario.compararPassword(password);
-    if (!passwordValido) return res.status(400).json({ mensaje: "Email o contraseña incorrectos" });
+    if (!passwordValido) {
+      if (req.headers.accept && req.headers.accept.includes("text/html")) {
+        req.flash("error_msg", "Email o contraseña incorrectos");
+        req.flash("old_email", email || "");
+        return res.redirect("/auth/login");
+      }
+      return res.status(400).json({ mensaje: "Email o contraseña incorrectos" });
+    }
 
     // guardar datos en la session
     req.session.userId = usuario._id;
     req.session.rol = usuario.rol;
 
-    // res.json({ mensaje: "Login exitoso", usuario: { id: usuario._id, nombre: usuario.nombre, rol: usuario.rol } });
-    
     if (process.env.NODE_ENV === "test") {
       return res.status(200).json({ mensaje: "Login exitoso", usuario: { id: usuario._id, nombre: usuario.nombre, rol: usuario.rol } });
     }
+
     // redirigir al index para pug
     res.redirect("/");
   } catch (error) {

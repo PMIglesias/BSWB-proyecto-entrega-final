@@ -33,6 +33,7 @@ app.use(flash());
 app.use((req, res, next) => {
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
+  res.locals.old_email = req.flash("old_email")[0] || "";
   res.locals.usuario = req.session.userId
     ? { id: req.session.userId, rol: req.session.rol, nombre: req.session.nombre || "Usuario" }
     : null;

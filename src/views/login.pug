@@ -4,12 +4,7 @@ block content
   .login-container
     h1 Iniciar Sesión
 
-    //- Mensajes de error flash
-    if error_msg && error_msg.length
-      each msg in error_msg
-        .alert.alert-danger= msg
-
-    //- Mensajes de éxito flash
+    //- Mensajes de éxito flash (mantenemos en la parte superior)
     if success_msg && success_msg.length
       each msg in success_msg
         .alert.alert-success= msg
@@ -17,7 +12,10 @@ block content
     form(action="/auth/login" method="POST")
       .form-group
         label(for="email") Email
-        input#email(type="email" name="email" placeholder="ejemplo@correo.com" required)
+        input#email(type="email" name="email" placeholder="ejemplo@correo.com" required value=old_email)
+        //- Mostrar sólo el primer mensaje de error justo debajo del input email
+        if error_msg && error_msg.length
+          .text-danger= error_msg[0]
 
       .form-group
         label(for="password") Contraseña
